@@ -188,18 +188,22 @@ NSString *const LFAudioComponentFailedToCreateNotification = @"LFAudioComponentF
 
 	*outSampleRate = inputSampleRate.mMinimum;
 
-	AudioStreamBasicDescription streamFormatDescription = {0};
-	streamFormatDescription.mSampleRate = inputSampleRate.mMinimum;
-	streamFormatDescription.mFormatID = kAudioFormatLinearPCM;
-	streamFormatDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;
-
-	streamFormatDescription.mChannelsPerFrame = (UInt32)_configuration.numberOfChannels;
-	streamFormatDescription.mFramesPerPacket = 1;
-	streamFormatDescription.mBitsPerChannel = 16;
-	streamFormatDescription.mBytesPerFrame = streamFormatDescription.mBitsPerChannel / 8 * streamFormatDescription.mChannelsPerFrame;
-	streamFormatDescription.mBytesPerPacket = streamFormatDescription.mBytesPerFrame * streamFormatDescription.mFramesPerPacket;
-	streamFormatDescription.mReserved = 0;
-	AudioUnitSetProperty(self.componetInstance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &streamFormatDescription, sizeof(streamFormatDescription));
+	if (_audioFormat.mSampleRate == 0) {
+		AudioStreamBasicDescription streamFormatDescription = {0};
+		streamFormatDescription.mSampleRate = inputSampleRate.mMinimum;
+		streamFormatDescription.mFormatID = kAudioFormatLinearPCM;
+		streamFormatDescription.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;
+		
+		streamFormatDescription.mChannelsPerFrame = (UInt32)_configuration.numberOfChannels;
+		streamFormatDescription.mFramesPerPacket = 1;
+		streamFormatDescription.mBitsPerChannel = 16;
+		streamFormatDescription.mBytesPerFrame = streamFormatDescription.mBitsPerChannel / 8 * streamFormatDescription.mChannelsPerFrame;
+		streamFormatDescription.mBytesPerPacket = streamFormatDescription.mBytesPerFrame * streamFormatDescription.mFramesPerPacket;
+		streamFormatDescription.mReserved = 0;
+		_audioFormat = streamFormatDescription;
+	}
+	
+	AudioUnitSetProperty(self.componetInstance, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Output, 1, &_audioFormat, sizeof(_audioFormat));
 
 	free(availableSampleRates);
 }

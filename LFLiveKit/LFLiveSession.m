@@ -371,6 +371,11 @@
 	return self.audioCaptureSource.muted;
 }
 
+- (AudioStreamBasicDescription)audioFormat
+{
+	return self.audioCaptureSource.audioFormat;
+}
+
 - (LFAudioCapture *)audioCaptureSource
 {
 	if (!_audioCaptureSource) {

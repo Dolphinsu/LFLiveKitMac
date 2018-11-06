@@ -104,6 +104,8 @@ typedef NS_ENUM(NSInteger, LFLiveCaptureTypeMask)
 /** The muted control callbackAudioData,muted will memset 0.*/
 @property (nonatomic, assign) BOOL muted;
 
+@property (nonatomic, readonly) AudioStreamBasicDescription audioFormat;
+
 /*  The adaptiveBitrate control auto adjust bitrate. Default is NO */
 @property (nonatomic, assign) BOOL adaptiveBitrate;
 

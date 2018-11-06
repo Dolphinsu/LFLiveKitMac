@@ -36,6 +36,7 @@ extern NSString *_Nullable const LFAudioComponentFailedToCreateNotification;
 /** The running control start capture or stop capture*/
 @property (nonatomic, assign) BOOL running;
 
+@property (nonatomic, readonly) AudioStreamBasicDescription audioFormat;
 #pragma mark - Initializer
 ///=============================================================================
 /// @name Initializer
